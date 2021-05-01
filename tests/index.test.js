@@ -9,4 +9,9 @@ describe('Test api endpoints', () => {
     expect(res.statusCode).toEqual(404);
     expect(res.body).toEqual(expectedMessage);
   });
+
+  it('validate and authenticate bearer header token', async () => {
+    const res = await request(baseUrl).get('/api/v1/markup');
+    expect(res.statusCode).toEqual(403);
+  });
 });
