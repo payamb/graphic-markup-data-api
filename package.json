@@ -4,9 +4,9 @@
   "description": "",
   "author": "",
   "license": "ISC",
-  "main": "src/index.js",
+  "main": "server.js",
   "scripts": {
-    "start:dev": "nodemon server.js",
+    "start:dev": "node server.js",
     "test": "jest"
   },
   "jest": {

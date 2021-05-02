@@ -1,4 +1,4 @@
-swagger: '3.0'
+swagger: '2.0'
 info:
   description: Graphic Markup API
   version: 1.0.0
@@ -27,20 +27,20 @@ paths:
           in: path
           required: true
           type: string
-        - in: query
-          name: sort
+        - name: sort
+          in: query
           type: string
           required: false
-        - in: query
-          name: location
+        - name: location
+          in: query
           type: string
           required: false
-        - in: query
-          name: page
+        - name: page
+          in: query
           type: integer
           required: false
-        - in: query
-          name: limit
+        - name: limit
+          in: query
           type: integer
           required: false
       responses:
@@ -54,8 +54,45 @@ definitions:
     properties:
       data:
         type: array
+        items:
+          $ref: '#/definitions/markupData'
       count:
         type: number
       code:
         type: number
+  markupData:
+    type: object
+    properties:
+      in_frame:
+        type: number
+      out_frame:
+        type: number
+      duration:
+        type: number
+      content:
+        type: object
+        properties:
+          value:
+            type: array
+            items:
+              type: string
+          labels:
+            type: array
+            items:
+              type: string
+          graphics_type_value:
+            type: array
+            items:
+              type: string
+          location:
+            type: array
+            items:
+              type: string
+          sample_frame:
+            type: integer
+      data_type_id:
+        type: string
+      tech_id:
+        type: string
+        
 
