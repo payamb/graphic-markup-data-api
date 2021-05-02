@@ -20,7 +20,6 @@ describe('Test api endpoints', () => {
       .get('/api/v1/markup/1?sort=duration:asc')
       .set('x-auth', validToken);
 
-    // expect(res.statusCode).toEqual(400);
-    expect(res.body).toEqual(expectedMessage);
+    expect(res.statusCode).toEqual(400);
   });
 });
