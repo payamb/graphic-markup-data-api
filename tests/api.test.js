@@ -14,12 +14,25 @@ describe('Test api endpoints', () => {
     expect(res.body).toEqual(expectedMessage);
   });
 
-  it('should return 400 when query params contain invalid value', async () => {
-    const expectedMessage = { message: 'Markup data not found', code: 400 };
-    const res = await request(baseUrl)
-      .get('/api/v1/markup/1?sort=duration:asc')
-      .set('x-auth', validToken);
+  it('should return 400 when query params contain any invalid value', async () => {
+    const queries = [
+      'sort=duration:asc', 
+      'sort=out_frame:ascending',
+      'sort=duration:asc&location=Lower',
+      // 'page=1',
+      'page=-1&limit=50'
+    ];
 
-    expect(res.statusCode).toEqual(400);
+    const requests = queries.map(query => {
+      return request(baseUrl)
+        .get(`/api/v1/markup/1?${query}`)
+        .set('x-auth', validToken);
+    });
+
+    await Promise.all(requests);
+
+    requests.forEach(request => {
+      expect(request.response.statusCode).toEqual(400);
+    });
   });
 });

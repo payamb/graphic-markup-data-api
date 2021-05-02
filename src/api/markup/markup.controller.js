@@ -3,7 +3,7 @@ const { getById } = require('./markup.model');
 const parseSortQuery = sortBy => {
   const output = { 
     valid: false,
-    sortBy: {}
+    field: {}
   };
 
   const allowedFields = ['in_frame', 'out_frame'];
@@ -16,27 +16,39 @@ const parseSortQuery = sortBy => {
     allowedOrder.includes(query[1])
     ) {
     output.valid = true;
-    output.sortBy = { field: query[0], order: query[1] }
+    output.field = { field: query[0], order: query[1] }
   }
 
   return output;
 };
 
 const parseQueryParams = params => {
-  // Sorting (by in_frame, out_frame, and in ascending and descending order)
-  // Filtering (by content.location)
-  // Pagination by accepting optional page number and page size inputs
-
-  // ?sortby=in_frame:asc
-  // ?filter=content.location
-  // ?page=1&limit=100
+  let output = {};
 
   if (params.sort) {
     const sortBy = parseSortQuery(params.sort);
+
     if (sortBy.valid === false) {
-      throw new Error('Invalid sort value, sortby must be any of: in_frame, out_frame');
+      throw new Error('Invalid sort value; sortby must be any of: in_frame, out_frame');
     }
+
+    output.sort = sortBy.field;
   }
+
+  if (params.filter) {
+    filter = params.filter;
+  }
+
+  if (params.page && params.limit) {
+    if (parseInt(params.page) <= 0 || parseInt(params.limit) <= 0) {
+      throw new Error('Invalid pagination values; page and limit parameters need to be positive integers');
+    }
+
+    output.page = params.page;
+    output.limit = params.limit;
+  }
+
+  return output;
 };
 
 
@@ -58,6 +70,8 @@ module.exports = async (req, res) => {
       .status(404)
       .json({ message: err.message, code: 404 });
   }
+
+  console.log(query);
 
   res.json({ message: 'abcd', params: req.params, query: req.query });
 }

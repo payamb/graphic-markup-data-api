@@ -11,7 +11,7 @@ describe('Test api server', () => {
 
     await Promise.all(requests);
 
-    requests.forEach((request) => {
+    requests.forEach(request => {
       expect(request.response.statusCode).toEqual(404);
       expect(request.response.body).toEqual(expectedMessage);
     })
@@ -29,17 +29,17 @@ describe('Test api server', () => {
 
     await Promise.all(requests);
 
-    requests.forEach((request) => {
+    requests.forEach(request => {
       expect(request.response.statusCode).toEqual(403);
       expect(request.response.body).toEqual(expectedMessage);
     })
   });
 
   it('should validate and authorise requests with correct x-auth token', async () => {
-    const res = await request(baseUrl)
+    const response = await request(baseUrl)
       .get('/api/v1/markup/1')
       .set('x-auth', 'ultra-secure-token');
 
-    expect(res.statusCode).toEqual(200);
+    expect(response.statusCode).toEqual(200);
   });
 });
