@@ -65,8 +65,12 @@ const getById = async (id, options) => {
     throw new Error('requested resource does not exists');
   }
 
-  const query = { options, markupData: source.get(id) };
-  const result = pipeWith(query, filterByLocation, sortBy, paginate);
+  const result = pipeWith(
+    { options, markupData: source.get(id) },
+    filterByLocation,
+    sortBy,
+    paginate
+  );
 
   return result.markupData;
 }

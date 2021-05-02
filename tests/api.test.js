@@ -36,7 +36,6 @@ describe('Test api endpoint /v1/markup/:id', () => {
   });
 
   it('should return correct result with GET request with no additional params', async () => {
-    const expectedMessage = { message: 'Markup data not found', code: 200 };
     const response = await request(baseUrl)
       .get('/api/v1/markup/1')
       .set('x-auth', validToken);
