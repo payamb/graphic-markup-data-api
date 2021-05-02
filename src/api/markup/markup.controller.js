@@ -1,7 +1,7 @@
 const { getById } = require('./markup.model');
 
 const parseSortQuery = sortBy => {
-  const output = { 
+  const output = {
     valid: false,
     field: {}
   };
@@ -12,9 +12,9 @@ const parseSortQuery = sortBy => {
   const query = sortBy.split(':');
 
   if (
-    allowedFields.includes(query[0]) && 
+    allowedFields.includes(query[0]) &&
     allowedOrder.includes(query[1])
-    ) {
+  ) {
     output.valid = true;
     output.field = { field: query[0], order: query[1] }
   }
@@ -23,7 +23,7 @@ const parseSortQuery = sortBy => {
 };
 
 const parseQueryParams = params => {
-  let output = {};
+  let query = {};
 
   if (params.sort) {
     const sortBy = parseSortQuery(params.sort);
@@ -32,11 +32,11 @@ const parseQueryParams = params => {
       throw new Error('Invalid sort value; sortby must be any of: in_frame, out_frame');
     }
 
-    output.sort = sortBy.field;
+    query.sort = sortBy.field;
   }
 
-  if (params.filter) {
-    filter = params.filter;
+  if (params.location) {
+    query.location = params.location;
   }
 
   if (params.page && params.limit) {
@@ -44,16 +44,16 @@ const parseQueryParams = params => {
       throw new Error('Invalid pagination values; page and limit parameters need to be positive integers');
     }
 
-    output.page = params.page;
-    output.limit = params.limit;
+    query.page = params.page;
+    query.limit = params.limit;
   }
 
-  return output;
+  return query;
 };
 
 
 module.exports = async (req, res) => {
-  let markupData, query;
+  let query, graphicMarkupData;
 
   try {
     query = parseQueryParams(req.query);
@@ -64,14 +64,12 @@ module.exports = async (req, res) => {
   }
 
   try {
-    markupData = await getById(req.params.id);
+    graphicMarkupData = await getById(parseInt(req.params.id), query);
   } catch (err) {
     return res
       .status(404)
       .json({ message: err.message, code: 404 });
   }
 
-  console.log(query);
-
-  res.json({ message: 'abcd', params: req.params, query: req.query });
+  return res.json({ data: graphicMarkupData, count: graphicMarkupData.length, code: 200 });
 }
