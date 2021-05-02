@@ -1,0 +1,61 @@
+swagger: '3.0'
+info:
+  description: Graphic Markup API
+  version: 1.0.0
+  title: Graphic Markup API
+basePath: /api/v1
+schemes:
+  - https
+  - http
+consumes:
+  - application/json
+produces:
+  - application/json
+
+tags:
+  - name: Graphic Markup
+paths:
+  '/markup/{id}':
+    get:
+      tags:
+        - Graphic Markup
+      summary: Get existing graphic markup data
+      description: Get existing graphic markup data
+      operationId: getGraphicMarkup
+      parameters:
+        - name: id
+          in: path
+          required: true
+          type: string
+        - in: query
+          name: sort
+          type: string
+          required: false
+        - in: query
+          name: location
+          type: string
+          required: false
+        - in: query
+          name: page
+          type: integer
+          required: false
+        - in: query
+          name: limit
+          type: integer
+          required: false
+      responses:
+        '200':
+          description: response containing graphic markup data
+          schema:
+            $ref: '#/definitions/markupResponse'
+definitions:
+  markupResponse:
+    type: object
+    properties:
+      data:
+        type: array
+      count:
+        type: number
+      code:
+        type: number
+
