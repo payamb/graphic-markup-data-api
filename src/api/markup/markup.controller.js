@@ -29,7 +29,7 @@ const parseQueryParams = params => {
     const sortBy = parseSortQuery(params.sort);
 
     if (sortBy.valid === false) {
-      throw new Error('Invalid sort value; sortby must be any of: in_frame, out_frame');
+      throw new Error('Invalid sort value; sort must be any of: in_frame, out_frame');
     }
 
     query.sort = sortBy.field;
