@@ -13,7 +13,7 @@ const getDataSource = async () => {
   return source;
 }
 
-const filterByLocation = (params) => {
+const filterByLocation = params => {
   if (!params.options.location) return params;
 
   const markupData = params
@@ -27,7 +27,7 @@ const filterByLocation = (params) => {
   return { markupData, options: params.options };
 };
 
-const sortBy = (params) => {
+const sortBy = params => {
   if (!params.options.sort) return params;
 
   const markupData = params.markupData;
@@ -44,7 +44,7 @@ const sortBy = (params) => {
   return { markupData, options: params.options }
 }
 
-const paginate = (params) => {
+const paginate = params => {
   if (!params.options.page || !params.options.limit) return params;
 
   const page = parseInt(params.options.page);
