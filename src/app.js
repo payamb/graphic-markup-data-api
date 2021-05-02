@@ -1,18 +1,14 @@
 const express = require('express');
 const app = express();
 const router = express.Router();
-const routerMiddleware = require('./middleware/invalidRouteHandler');
-const headerAuthenticationMiddleware = require('./middleware/headerAuthentication');
-
-const port = process.env.PORT || 8280;
+const routerMiddleware = require('./middleware/missingResourceHandler');
+const headerAuthentication = require('./middleware/authenticate');
 
 app.use(express.json());
-
-router.use('/api/v1/', headerAuthenticationMiddleware);
-router.use(routerMiddleware);
-
-router.get('/api/v1/markup/', (req, res) => res.send('hello'));
+router.use('/api/', headerAuthentication);
+router.get('/api/v1/markup/:id', require('./api/markup/markup.controller'));
 
 app.use(router);
+app.use(routerMiddleware);
 
-module.exports = { app, port }
+module.exports = app;
